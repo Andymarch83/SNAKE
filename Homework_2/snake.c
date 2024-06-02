@@ -98,7 +98,8 @@ int main() {
         else if (ch == 27) {
             clear;
             endwin();
-            printf("%d\n", snake.x[10]);
+            printf("\033[2J\033[1;1H");
+            printf("Good buy!");
             return 0; }
         else if(ch == ERR)
             last = last;
