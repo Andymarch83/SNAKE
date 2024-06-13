@@ -6,13 +6,13 @@
 #include <time.h>
 #include <math.h>
 
-// структура список координат (coord), для тела любого объекта (змея, еда)
-typedef struct coord { // coord - имя структуры
+
+typedef struct coord { 
     int x;
     int y;
     int value;       
-    struct coord *next; // т.к. object пока не определен, используем указатель на структуру coord
-} object; // object - тип данных
+    struct coord *next; /
+} object; 
 
 typedef struct head {
     object* obj;
@@ -26,7 +26,7 @@ typedef struct head {
     int right;
 } snake;
 
-// функция постановки в очередь списков, что змеи, что еды
+
 void enqueue(object **pl, char data, int y, int x)
 {
     object *ptmp = *pl;
@@ -49,7 +49,7 @@ void enqueue(object **pl, char data, int y, int x)
 int right(snake* snakeName, object* screen)
 {
     object *pl = snakeName->obj;
-    // Перемещение головы змеи
+    
     if (pl)
     {
         int prev_x = pl->x;
@@ -59,12 +59,12 @@ int right(snake* snakeName, object* screen)
             pl->x--;
             return 1;
         }
-        // Проверка на выход за границы экрана
+        
         if (pl->x >= screen->x)
-            pl->x = 0; // Появление с противоположной стороны
+            pl->x = 0; 
         pl = pl->next;
 
-        // Перемещение остальных элементов
+        
         while (pl)
         {
             int temp_x = pl->x;
@@ -82,7 +82,7 @@ int right(snake* snakeName, object* screen)
 int left(snake* snakeName, object* screen)
 {
     object *pl = snakeName->obj;  
-    // Перемещение головы змеи
+    
     if (pl)
     {
         int prev_x = pl->x;
@@ -92,12 +92,12 @@ int left(snake* snakeName, object* screen)
             pl->x++;
             return 1;
         }
-        // Проверка на выход за границы экрана
+        
         if (pl->x <= 0)
-            pl->x = screen->x; // Появление с противоположной стороны
+            pl->x = screen->x; 
         pl = pl->next;
 
-        // Перемещение остальных элементов
+        
         while (pl)
         {
             int temp_x = pl->x;
@@ -115,7 +115,7 @@ int left(snake* snakeName, object* screen)
 int up(snake* snakeName, object* screen)
 {
     object *pl = snakeName->obj;
-    if (pl) {// Перемещение головы змеи
+    if (pl) {
         int prev_x = pl->x;
         int prev_y = pl->y;
         pl->y--;
@@ -123,10 +123,10 @@ int up(snake* snakeName, object* screen)
             pl->y++;
             return 1;
         }
-        if (pl->y < 0) // Проверка на выход за границы экрана
-            pl->y = screen->y; // Появление с противоположной стороны
+        if (pl->y < 0) 
+            pl->y = screen->y; 
         pl = pl->next;
-        while (pl){ // Перемещение остальных элементов
+        while (pl){ 
             int temp_x = pl->x;
             int temp_y = pl->y;
             pl->x = prev_x;
@@ -142,7 +142,7 @@ int up(snake* snakeName, object* screen)
 int down(snake* snakeName, object* screen)
 {
     object *pl = snakeName->obj;
-    // Перемещение головы змеи
+    
     if (pl)
     {
         int prev_x = pl->x;
@@ -152,12 +152,12 @@ int down(snake* snakeName, object* screen)
             pl->y--;
             return 1;
         }
-        // Проверка на выход за границы экрана
+        
         if (pl->y > screen->y)
-            pl->y = 1; // Появление с противоположной стороны
+            pl->y = 1; 
         pl = pl->next;
 
-        // Перемещение остальных элементов
+        
         while (pl)
         {
             int temp_x = pl->x;
@@ -195,13 +195,13 @@ void printScore(snake *snakeName) {
     int score = 0;
     object *current = snakeName->obj;
 
-    // Подсчет количества элементов в змее (за исключением первых трех элементов)
+    
     while (current != NULL && current->next != NULL && current->next->next != NULL && current->next->next->next != NULL) {
         score++;
         current = current->next;
     }
     setColor(0);
-    // Вывод сообщения о счете по центру экрана
+    
     mvprintw(LINES / 2 - strlen(snakeName->name), (COLS - 30) / 2, "%s ate %d times", snakeName->name, score);
     refresh();
 }
@@ -253,7 +253,7 @@ void printObject(object *pl, int color)
     setColor(color);
     while (pl)
     {
-        mvprintw(pl->y, pl->x, "%c", pl->value); // Изменено форматирование строки
+        mvprintw(pl->y, pl->x, "%c", pl->value); 
         pl = pl->next;
     }
 }
@@ -293,16 +293,16 @@ object* initFood(int level, object* screen, int startFood)
 
 int checkDirection(snake *snakeName, object* screen)
 {
-    object *pl = snakeName->obj; // Используем локальную переменную для прохода по змейке
+    object *pl = snakeName->obj; 
     char head_value = pl->value;
     int head_x = pl->x;
     int head_y = pl->y;
-    pl = pl->next; // Переход к следующему элементу (после головы)
+    pl = pl->next; 
 
-    // Проходим по оставшимся элементам змейки
+    
     while (pl)
     {
-        // Если координаты головы совпадают с координатами другого элемента змейки, то возвращаем 1 (пересечение)
+        
         if (head_x == pl->x && head_y == pl->y)
         {
             return 2175678;
@@ -313,52 +313,51 @@ int checkDirection(snake *snakeName, object* screen)
 }
 
 int checkFood(snake* snakeName, object *feeld) {
-    int foodEaten = 0; // Флаг, обозначающий, была ли съедена еда
-    // Проверка, совпадает ли голова змеи с каким-либо элементом еды
+    int foodEaten = 0; 
     object *head = snakeName->obj;
     if (head != NULL && feeld != NULL) {
         int head_x = head->x;
         int head_y = head->y;
         object *current = feeld;
         object *prev = NULL;
-        while (current != NULL) { // Проходим по всем элементам еды
-            // Если координаты головы змеи совпадают с координатами текущего элемента еды
+        while (current != NULL) { 
+            
             if (head_x == current->x && head_y == current->y) {
-                foodEaten = 1; // Устанавливаем флаг, что еда была съедена
-                // Удаляем текущий элемент еды
+                foodEaten = 1; 
+                
                 if (prev != NULL) {
-                    prev->next = current->next; // Переподключаем ссылки
-                    free(current); // Освобождаем память
-                    current = prev->next; // Переходим к следующему элементу
+                    prev->next = current->next; 
+                    free(current); 
+                    current = prev->next; 
                 } else {
-                    feeld = current->next; // Переопределяем указатель на начало списка
-                    free(current); // Освобождаем память
-                    current = feeld; // Переходим к следующему элементу
+                    feeld = current->next; 
+                    free(current); 
+                    current = feeld; 
                 }
-                // Наращиваем хвост змейки
+                
                 enqueue(&head, '*', snakeName->tail_y, snakeName->tail_x);
             } else {
-                prev = current; // Запоминаем текущий элемент как предыдущий
-                current = current->next; // Переходим к следующему элементу
+                prev = current; 
+                current = current->next; 
             }
         }
     }
 
-    return foodEaten; // Возвращаем флаг, обозначающий, была ли съедена еда
+    return foodEaten; 
 }
 
 object* initScreen(){
-    initscr(); // Инициализация экрана
-    noecho(); // Отключение отображения вводимых символов
-    curs_set(FALSE); // Скрытие курсора
-    nodelay(stdscr, TRUE); // Включение неблокирующего режима чтения ввода
-    keypad(stdscr, TRUE); // Включение поддержки функциональных клавиш
+    initscr(); 
+    noecho(); 
+    curs_set(FALSE); 
+    nodelay(stdscr, TRUE); 
+    keypad(stdscr, TRUE); 
     scrollok(stdscr, TRUE);
-    object* screen = NULL; // Инициализация экрана
+    object* screen = NULL; 
     screen = malloc(sizeof(object));
-    getmaxyx(stdscr, screen->y, screen->x); // Размеры экрана по максимальной ширине и высоте
-    clear(); // Очистка экрана
-    refresh(); // Обновление экрана
+    getmaxyx(stdscr, screen->y, screen->x); 
+    clear(); 
+    refresh(); 
     return screen;
 }
 
@@ -385,10 +384,10 @@ int startHelp(object *screen) {
         "ESC - используется для выхода из справки или для выхода из текущего раунда игры",
         "P постановка игры на паузу, для снятия с паузы нужно нажать на управляющие клавиши WASD или стрелки"
     };
-    // Цикл для вывода каждой строки меню
+    
     int num_items = sizeof(menu_items) / sizeof(menu_items[0]);
-    int start_y = 1; // Расчет начальной строки для центрирования
-    int start_x = 1; // Расчет начальной колонки для центрирования
+    int start_y = 1; 
+    int start_x = 1; 
     for (int i = 0; i < num_items; i++) {
         mvprintw(start_y + i, start_x, menu_items[i]);
     }
@@ -418,10 +417,10 @@ int startMenu(object *screen) {
         "Use ESC to exit help, or stop round",
         "Use P to pause round, then press WASD to continue",
     };
-    // Цикл для вывода каждой строки меню
+    
     int num_items = sizeof(menu_items) / sizeof(menu_items[0]);
-    int start_y = (screen->y - num_items) / 2; // Расчет начальной строки для центрирования
-    int start_x = (screen->x) / 3; // Расчет начальной колонки для центрирования
+    int start_y = (screen->y - num_items) / 2; 
+    int start_x = (screen->x) / 3; 
     for (int i = 0; i < num_items; i++) {
         mvprintw(start_y + i, start_x, menu_items[i]);
     }
@@ -446,7 +445,7 @@ int ai(snake* snakeName, object* field, object* screen){
         int head_y = head->y;
         object *current = field;
         object *prev = NULL;
-        while (current != NULL) { // поиск позиции еды по символу 'O'
+        while (current != NULL) { 
             if(current->value == 'O' && distance > sqrt(pow(head_x - current->x, 2) + pow(head_y - current->y, 2))){
                 distance = sqrt(pow(head_x - current->x, 2) + pow(head_y - current->y, 2));
                 food_x = current->x;
@@ -456,7 +455,7 @@ int ai(snake* snakeName, object* field, object* screen){
             current = current->next;
         }
 
-        // Определение направления движения
+        
         float min_distance = 1000;
         int next_move = ch;
         if (head_x > food_x && head_y > food_y) {
@@ -495,7 +494,7 @@ int ai(snake* snakeName, object* field, object* screen){
 int main()
 {
     setlocale(LC_ALL, "");
-    object *screen = initScreen(); // Инициализация экрана монитора с помощью ncurses
+    object *screen = initScreen(); 
     int anacondaColor=3;
     int cobraColor=2; 
     int choose = '0';
@@ -512,15 +511,14 @@ int main()
             break;
         }
         case '2': {
-            snake *anaconda = initSnake('@', "Anaconda", 10, 10, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT); // Инициализация змейки1
+            snake *anaconda = initSnake('@', "Anaconda", 10, 10, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT); 
             object *field = initFood(level, screen, startFood);
             while (faults == 0) {
                 printObject(field, 4);
-                int ch = getch(); // Считывание нажатой клавиши
+                int ch = getch(); 
                 faults += crawl(anaconda, ch, screen); 
-                clear(); // Очистка экрана
-                printObject(anaconda->obj, anacondaColor); // печать змейки
-                if(checkFood(anaconda, field)){ // проверка на съедение еды
+                clear(); 
+                printObject(anaconda->obj, anacondaColor); 
                     level++;
                     setColor(0);
                     mvprintw(0, 0, "Level: %d", level);
@@ -539,18 +537,18 @@ int main()
             break;   
         }
         case '3': {
-            snake *anaconda = initSnake('@', "Anaconda", 5, 5, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT); // Инициализация змейки1
-            snake *cobra = initSnake('%', "Cobra", 20, 20, 'w', 's', 'a', 'd'); // Инициализация змейки2
+            snake *anaconda = initSnake('@', "Anaconda", 5, 5, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT); 
+            snake *cobra = initSnake('%', "Cobra", 20, 20, 'w', 's', 'a', 'd'); 
             object *field = initFood(level, screen, startFood);
             while (faults == 0) {
                 printObject(field, 4);
-                int ch = getch(); // Считывание нажатой клавиши
+                int ch = getch(); 
                 faults += crawl(anaconda, ch, screen); 
                 faults += crawl(cobra, ch, screen); 
                 clear(); // Очистка экрана
-                printObject(anaconda->obj, anacondaColor); // печать змейки
-                printObject(cobra->obj, cobraColor); // печать змейки
-                if(checkFood(anaconda, field) || checkFood(cobra, field)){ // проверка на съедение еды
+                printObject(anaconda->obj, anacondaColor); 
+                printObject(cobra->obj, cobraColor); 
+                if(checkFood(anaconda, field) || checkFood(cobra, field)){ 
                     level++;
                     setColor(0);
                     mvprintw(0, 0, "Level: %d", level);
@@ -571,19 +569,19 @@ int main()
             break;
         }
         case '4': {
-            snake *anaconda = initSnake('@', "Anaconda", 5, 5, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT); // Инициализация змейки1
-            snake *cobra = initSnake('%', "Cobra", 20, 20, 'w', 's', 'a', 'd'); // Инициализация змейки2
+            snake *anaconda = initSnake('@', "Anaconda", 5, 5, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT); 
+            snake *cobra = initSnake('%', "Cobra", 20, 20, 'w', 's', 'a', 'd'); 
             object *field = initFood(level, screen, startFood);
             while (faults == 0) {
                 printObject(field, 4);
-                int ch = getch(); // Считывание нажатой клавиши
+                int ch = getch(); 
                 faults += crawl(anaconda, ch, screen); 
                 int ch2 = ai(cobra, field, screen);
                 faults += crawl(cobra, ch2, screen); 
                 clear(); // Очистка экрана
-                printObject(anaconda->obj, anacondaColor); // печать змейки
-                printObject(cobra->obj, cobraColor); // печать змейки
-                if(checkFood(anaconda, field) || checkFood(cobra, field)){ // проверка на съедение еды
+                printObject(anaconda->obj, anacondaColor); 
+                printObject(cobra->obj, cobraColor); 
+                if(checkFood(anaconda, field) || checkFood(cobra, field)){ 
                     level++;
                     setColor(0);
                     mvprintw(0, 0, "Level: %d", level);
@@ -604,12 +602,12 @@ int main()
             break;
         }
         case '5': {
-            snake *anaconda = initSnake('@', "Anaconda", 5, 5, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT); // Инициализация змейки1
-            snake *cobra = initSnake('%', "Cobra", 37, 130, 'w', 's', 'a', 'd'); // Инициализация змейки2
+            snake *anaconda = initSnake('@', "Anaconda", 5, 5, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT); 
+            snake *cobra = initSnake('%', "Cobra", 37, 130, 'w', 's', 'a', 'd'); 
             object *field = initFood(level, screen, startFood);
             while (faults == 0) {
                 printObject(field, 4);
-                int ch = getch(); // Считывание нажатой клавиши
+                int ch = getch(); 
                 if(ch == 27) 
                     break;
                 int ch1 = ai(anaconda, field, screen);
@@ -617,9 +615,9 @@ int main()
                 int ch2 = ai(cobra, field, screen);
                 faults += crawl(cobra, ch2, screen); 
                 clear(); // Очистка экрана
-                printObject(anaconda->obj, anacondaColor); // печать змейки
-                printObject(cobra->obj, cobraColor); // печать змейки
-                if(checkFood(anaconda, field) || checkFood(cobra, field)){ // проверка на съедение еды
+                printObject(anaconda->obj, anacondaColor); 
+                printObject(cobra->obj, cobraColor); 
+                if(checkFood(anaconda, field) || checkFood(cobra, field)){ 
                     level++;
                     setColor(0);
                     mvprintw(0, 0, "Level: %d", level);
@@ -699,7 +697,7 @@ int main()
                 mvprintw(row, 0, "%s", buffer);
                 refresh();
                 row++;
-                // Если достигнут конец экрана, ожидаем нажатие клавиши перед продолжением
+                
                 if (row >= screenHeight) {
                     printw("\n\nPress any key to continue...");
                     refresh();
@@ -709,11 +707,11 @@ int main()
                 }
             }
             fclose(file);
-            // Очистка памяти
+            
             if (buffer) {
                 free(buffer);
             }
-            // Ожидание нажатия клавиши перед выходом
+            
             printw("\n\n<Press 0 for Menu or 9 to Exit>");
             refresh();
             choose = getchar();
@@ -735,7 +733,7 @@ int main()
     mvprintw(screen->y/2, (COLS - 30) / 2, "See you next time!");
     refresh();
     sleep(3);
-    endwin(); // деактивация ncurses на экрана монитора
+    endwin(); 
     printf("\033[2J\033[H");
     return 0;
 }
